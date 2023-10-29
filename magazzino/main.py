@@ -39,8 +39,6 @@ class Magazzino():
 
     def rimuovi_oggetto(self, oggetto, quantità, destinatario):
         self.inventario[oggetto] -= quantità
-        if self.inventario[oggetto] == 0:
-            self.inventario.pop(oggetto)
         self.aggiorna_inventario()
         data = datetime.now().strftime("%d:%m:%Y")
         self.scrivi_transazione(data, "Uscita", oggetto, quantità, destinatario)
@@ -52,7 +50,7 @@ class Magazzino():
                 scrittore = csv.writer(file)
                 for chiave in self.inventario:
                     testo.append([chiave, self.inventario[chiave]])
-                scrittore.writerows(testo)
+                scrittore.writerows(sorted(testo))
         except:
             self.genera_errore("Errore nella scrittura dell'inventario")
 
